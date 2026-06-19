@@ -1,0 +1,26 @@
+Chat_Local/
+│
+├── app.py
+│
+├── llm/
+│   └── ollama_client.py
+│
+├── rag/
+│   ├── pdf_reader.py
+│   ├── vectorstore.py
+│   └── ingest.py
+│
+├── data/
+│   ├── pdfs/
+│   └── chroma/
+│
+├── uploads/
+│
+├── templates/
+│   └── index.html
+│
+├── static/
+│   ├── chat.js
+│   └── style.css
+│
+└── requirements.txt
