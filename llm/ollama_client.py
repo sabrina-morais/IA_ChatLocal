@@ -1,28 +1,29 @@
 import requests
 
-MODEL = "qwen3:8b"
-
-OLLAMA_URL = "http://localhost:11434/api/chat"
+from config import MODEL_NAME
+from config import OLLAMA_URL
 
 history = []
 
 
-def ask_llm(prompt):
+def ask_llm(question):
 
     global history
 
     history.append({
         "role": "user",
-        "content": prompt
+        "content": question
     })
+
+    payload = {
+        "model": MODEL_NAME,
+        "messages": history,
+        "stream": False
+    }
 
     response = requests.post(
         OLLAMA_URL,
-        json={
-            "model": MODEL,
-            "messages": history,
-            "stream": False
-        },
+        json=payload,
         timeout=300
     )
 

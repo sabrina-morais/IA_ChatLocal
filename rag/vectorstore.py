@@ -1,42 +1,102 @@
+import os
 import chromadb
-
+import hashlib
 from sentence_transformers import SentenceTransformer
+from config import CHROMA_DB_PATH
+
+os.environ[
+    "ANONYMIZED_TELEMETRY"
+] = "False"
+
+# =====================================================
+# ChromaDB
+# =====================================================
 
 client = chromadb.PersistentClient(
-    path="data/chroma"
+    path=CHROMA_DB_PATH,
+    
 )
 
 collection = client.get_or_create_collection(
     name="documents"
 )
 
-model = SentenceTransformer(
+# =====================================================
+# Embeddings
+# =====================================================
+
+embedding_model = SentenceTransformer(
     "all-MiniLM-L6-v2"
 )
 
+# =====================================================
+# Adicionar documento
+# =====================================================
 
 def add_document(text, source):
 
-    embedding = model.encode(text).tolist()
+    embedding = (
+        embedding_model
+        .encode(text)
+        .tolist()
+    )
+
+    document_id = hashlib.md5(
+        text.encode()
+    ).hexdigest()
 
     collection.add(
-        ids=[source],
+        ids=[document_id],
         documents=[text],
-        embeddings=[embedding]
+        embeddings=[embedding],
+        metadatas=[
+            {
+                "source": source
+            }
+        ]
     )
 
 
-def search(query):
+def search(
+    query,
+    n_results=5
+):
 
-    embedding = model.encode(query).tolist()
+    query_embedding = (
+        embedding_model
+        .encode(query)
+        .tolist()
+    )
 
     result = collection.query(
-        query_embeddings=[embedding],
-        n_results=3
+        query_embeddings=[
+            query_embedding
+        ],
+        n_results=n_results
     )
 
-    if result["documents"]:
+    docs = []
 
-        return result["documents"][0]
+    for i, doc in enumerate(
+        result["documents"][0]
+    ):
 
-    return []
+        docs.append(
+            {
+                "text": doc,
+                "source":
+                result["metadatas"][0][i][
+                    "source"
+                ]
+            }
+        )
+
+    return docs
+
+
+def stats():
+
+    return {
+        "documents":
+        collection.count()
+    }

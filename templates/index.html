@@ -1,75 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
 
-<meta charset="utf-8">
+    <meta charset="UTF-8">
 
-<title>Private GPT</title>
+    <title>PrivateGPT Local</title>
 
-<link rel="stylesheet"
-href="/static/style.css">
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-<h1>🤖 Private GPT Qwen3 8B</h1>
+    <aside class="sidebar">
 
-<div class="toolbar">
+        <h2>🤖 PrivateGPT</h2>
 
-<button onclick="clearChat()">
-Nova Conversa
-</button>
+        <div class="upload-card">
 
-</div>
+            <h3>Documentos</h3>
 
-<div class="pdf-panel">
+            <input
+                type="file"
+                id="pdf-file"
+                accept=".pdf"
+            >
 
-<input
-type="file"
-id="pdf-file"
-accept=".pdf"
->
+            <button id="btn-pdf">
+                📄 Enviar PDF
+            </button>
 
-<button onclick="uploadPDF()">
-Enviar PDF
-</button>
+            <hr>
 
-<button onclick="ingestPDFs()">
-Indexar PDF
-</button>
+            <input
+                type="file"
+                id="audio-file"
+                accept=".mp3,.wav,.m4a"
+            >
 
-<div id="status-box">
+            <button id="btn-audio">
+                🎤 Enviar Áudio
+            </button>
 
-Sistema pronto.
+            <hr>
 
-</div>
+            <input
+                type="file"
+                id="video-file"
+                accept=".mp4"
+            >
 
-</div>
+            <button id="btn-video">
+                🎥 Enviar Vídeo
+            </button>
 
-<div id="chat-box"></div>
+            <hr>
 
-<div class="input-area">
+            <button id="btn-ingest">
+                📚 Indexar Conteúdo
+            </button>
 
-<input
-type="text"
-id="message"
-placeholder="Digite sua pergunta..."
->
+        </div>
 
-<button onclick="sendMessage()">
-Enviar
-</button>
+        <button
+            class="new-chat"
+            id="btn-clear"
+        >
+            ➕ Nova Conversa
+        </button>
 
-</div>
+    </aside>
+
+    <main class="chat-container">
+
+        <header>
+
+            <h1>Qwen3 8B Local</h1>
+
+            <div id="status-box">
+                Sistema pronto
+            </div>
+
+        </header>
+
+        <div id="chat-box">
+
+            <div class="welcome">
+
+                <h2>Bem-vindo</h2>
+
+                <p>
+                    Faça perguntas livres ou sobre
+                    PDFs, áudios e vídeos indexados.
+                </p>
+
+            </div>
+
+        </div>
+
+        <div class="input-area">
+
+            <textarea
+                id="message"
+                placeholder="Digite sua pergunta..."
+            ></textarea>
+
+            <button id="btn-send">
+                🚀 Enviar
+            </button>
+
+        </div>
+
+    </main>
 
 </div>
 
 <script src="/static/app.js"></script>
 
 </body>
-
 </html>
